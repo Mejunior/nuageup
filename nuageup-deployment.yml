@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nuageup-app-deployment
+  labels:
+    app: my-nuageup-app
+spec:
+  replicas: 2  # Specifies the number of replicas
+  selector:
+    matchLabels:
+      app: my-nuageup-app
+  template:
+    metadata:
+      labels:
+        app: my-nuageup-app
+    spec:
+      containers:
+      - name: nuageup-app-container
+        image: junior75/my-nuageup-app
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"  # 100 millicpu (0.1 CPU cores)
+            memory: "100Mi"  # 100 MiB
+          limits:
+            cpu: "200m"  # 200 millicpu (0.2 CPU cores)
+            memory: "200Mi"  # 200 MiB

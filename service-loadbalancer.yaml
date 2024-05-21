@@ -1,0 +1,15 @@
+apiVersion: v1      # Defines the API version of the Kubernetes object
+kind: Service       # Specifies that the object type is a Service
+metadata:                         
+  name: nuageup-app-loadbalancer
+  labels:
+    app: nuageup-app
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80          # The port that the service exposes externally
+      targetPort: 80    # The port on the pods where the application is running. This is the port to which the load balancer will forward the traffic
+      protocol: TCP
+  selector:
+    app: nuageup-app  # Specifies which pods the service should target based on labels. The selector here must match the labels assigned to the pods of the application
+

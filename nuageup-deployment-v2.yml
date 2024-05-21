@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nuageup-app-deployment-v2
+  labels:
+    app: my-nuageup-app
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-nuageup-app
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: my-nuageup-app
+        version: v2
+    spec:
+      containers:
+      - name: nuageup-app-container
+        image: junior75/my-nuageup-app:v2
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 20

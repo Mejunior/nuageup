@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-specific-traffic-to-v1
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: my-nuageup-app
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          app: my-nuageup-app
+    - ipBlock:
+        cidr: 192.168.82.0/24
+    ports:
+    - protocol: TCP
+      port: 80
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          app: my-nuageup-app
+    - ipBlock:
+        cidr: 192.168.82.0/24
+    ports:
+    - protocol: TCP
+      port: 80
