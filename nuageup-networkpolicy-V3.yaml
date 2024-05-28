@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ping-to-nuageup-app
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: netshoot
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 10.244.0.167/32
