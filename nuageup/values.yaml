@@ -1,0 +1,62 @@
+replicaCount: 1
+
+image:
+  repository: junior75/my-nuageup-app
+  tag: "v2"
+  pullPolicy: IfNotPresent
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 31347
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  hosts:
+    - host: nuageup-v1.info
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nuageup-app-deployment
+              port:
+                number: 80
+    - host: nuageup-v2.info
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nuageup-app-deployment-v2
+              port:
+                number: 80
+
+resources:
+  requests:
+    cpu: "100m"
+    memory: "100Mi"
+  limits:
+    cpu: "200m"
+    memory: "200Mi"
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+
+networkPolicy:
+  enabled: true
+  from:
+    - cidr: 10.244.0.167/32
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
